@@ -2,9 +2,10 @@
 
 var log = require('debug')('develop');
 
-function Generator(redisService, manager) {
+function Generator(redisService, manager, getMessage) {
     this._redisService = redisService;
     this._manager = manager;
+    this._getMessage=getMessage;
 }
 
 Generator.prototype.start = function (callback) {
@@ -43,7 +44,7 @@ function touch(callback) {
 function sendMsg(timeout, curTerm, callback) {
     var self = this;
     setTimeout(function () {
-        var msg = getMessage.call(self);
+        var msg = self._getMessage();
         self._redisService.checkTerm(curTerm, function (err, result) {
             if (!result) {
                 log('Switch to MessageHandler.');
