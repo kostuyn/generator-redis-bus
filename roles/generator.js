@@ -48,7 +48,7 @@ function sendMsg(timeout, curTerm, callback) {
             if (!result) {
                 log('Switch to MessageHandler.');
                 self._isStop = true;
-                self._manager.messageHandler.start(callback);
+                self._manager.switchToMessageHandler(callback);
                 return;
             }
 

@@ -2,9 +2,10 @@
 
 var log = require('debug')('develop');
 
-function MessageHandler(redisService, manager) {
+function MessageHandler(redisService, manager, eventHandler) {
     this._redisService = redisService;
     this._manager = manager;
+    this._eventHandler = eventHandler;
 }
 
 MessageHandler.prototype.start = function (callback) {
@@ -26,7 +27,7 @@ function check(callback) {
             if (!result) {
                 log('Switch to Generator.');
                 self._isStop = true;
-                self._manager.generator.start(callback);
+                self._manager.switchToGenerator(callback);
                 return;
             }
 
@@ -52,7 +53,7 @@ function getMsg(timeout, callback) {
             }
 
             // Processing message
-            eventHandler(msg, function (err, msg) {
+            self._eventHandler(msg, function (err, msg) {
                 if (err) {
                     self._redisService.logError(msg, function (err) {
                         if (err) {
