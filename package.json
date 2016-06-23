@@ -1,0 +1,14 @@
+{
+  "name": "generator-redis-bus",
+  "description": "Special for OneTwoTrip.",
+  "version": "0.0.1",
+  "dependencies": {
+    "debug": "^2.2.0",
+    "minimist": "^1.2.0",
+    "redis": "^2.6.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "sinon": "^1.17.4"
+  }
+}
