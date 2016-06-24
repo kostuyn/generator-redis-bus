@@ -16,13 +16,14 @@ describe('1000000 messages Test', function () {
 
     it('Should be OK', function (done) {
         this.timeout(15000000);
-        var n = 103;
+        var n = 10000000;
         var count = 0;
         var array = [];
         var getMessage = function () {
             if (count == n) {
                 array = _.uniq(array);
                 assert.equal(array.length, n);
+
                 _.each(managers, function (manager) {
                     manager.stop();
                 });
