@@ -10,13 +10,14 @@ var Generator = require('../roles/generator');
 var MessageHandler = require('../roles/message-handler');
 var ErrorHandler = require('../roles/error-handler');
 
-describe('1000000 messages Test', function () {
+var n = process.env.MSG || 1000;
+
+describe(n + ' messages Test', function () {
     beforeEach(clearDb);
     afterEach(clearDb);
 
     it('Should be OK', function (done) {
         this.timeout(15000000);
-        var n = 1000000;
         var count = 0;
         var array = [];
         var getMessage = function () {
