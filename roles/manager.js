@@ -53,4 +53,9 @@ Manager.prototype.start = function (getErrors, callback) {
     });
 };
 
+Manager.prototype.stop=function(){
+    this._generator.stop();
+    this._messageHandler.stop();
+};
+
 module.exports = Manager;

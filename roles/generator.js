@@ -24,6 +24,12 @@ Generator.prototype.start = function (callback) {
     });
 };
 
+
+Generator.prototype.stop = function () {
+    log('Generator is stopped.');
+    this._isStop = true;
+};
+
 function touch(callback) {
     var self = this;
     setTimeout(function () {
@@ -47,7 +53,7 @@ function sendMsg(timeout, curTerm, callback) {
         self._redisService.checkTerm(curTerm, function (err, result) {
             if (!result) {
                 log('Switch to MessageHandler.');
-                self._isStop = true;
+                self.stop();
                 self._manager.switchToMessageHandler(callback);
                 return;
             }

@@ -16,6 +16,11 @@ MessageHandler.prototype.start = function (callback) {
     getMsg.call(this, 0, callback);
 };
 
+MessageHandler.prototype.stop = function () {
+    log('MessageHandler is stopped.');
+    this._isStop = true;
+};
+
 function check(callback) {
     var self = this;
     setTimeout(function () {
@@ -26,7 +31,7 @@ function check(callback) {
 
             if (!result) {
                 log('Switch to Generator.');
-                self._isStop = true;
+                self.stop();
                 self._manager.switchToGenerator(callback);
                 return;
             }

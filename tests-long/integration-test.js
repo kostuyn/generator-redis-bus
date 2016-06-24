@@ -12,19 +12,22 @@ var ErrorHandler = require('../roles/error-handler');
 
 describe('1000000 messages Test', function () {
     beforeEach(clearDb);
+    afterEach(clearDb);
 
     it('Should be OK', function (done) {
         this.timeout(15000000);
-        var n = 1;
+        var n = 103;
         var count = 0;
         var array = [];
         var getMessage = function () {
-            if (count >= n) {
+            if (count == n) {
                 array = _.uniq(array);
-                //console.log(array);
                 assert.equal(array.length, n);
+                _.each(managers, function (manager) {
+                    manager.stop();
+                });
                 done();
-                return;
+                return count++;
             }
 
             return count++;
@@ -34,10 +37,12 @@ describe('1000000 messages Test', function () {
             callback(null, msg);
         };
 
-        startNode(getMessage, eventHandler);
-        startNode(getMessage, eventHandler);
-        startNode(getMessage, eventHandler);
-        startNode(getMessage, eventHandler);
+        var managers = [
+            startNode(getMessage, eventHandler),
+            startNode(getMessage, eventHandler),
+            startNode(getMessage, eventHandler),
+            startNode(getMessage, eventHandler)
+        ];
     });
 
 
@@ -63,6 +68,8 @@ function startNode(getMessage, eventHandler) {
 
         redisService.close();
     });
+
+    return manager;
 }
 
 function clearDb(callback) {
