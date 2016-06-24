@@ -11,9 +11,11 @@ var Generator = require('./roles/generator');
 var MessageHandler = require('./roles/message-handler');
 var ErrorHandler = require('./roles/error-handler');
 
-var redisService = new RedisService('localhost', 6379);
+var msgTimeout = parseInt(args.msgTimeout) || 500;
+var host = args.host || 'localhost';
+var port = parseInt(args.port) || 6379;
 
-var msgTimeout = args.msgTimeout || 500;
+var redisService = new RedisService(host, port);
 
 var manager = new Manager(redisService, msgTimeout);
 var generator = new Generator(redisService, manager, getMessage);
