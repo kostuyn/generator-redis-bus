@@ -21,7 +21,10 @@ describe('Generator Test', function () {
     var manager = {
         switchToMessageHandler: function () {
 
-        }
+        },
+        msgTimeout: 500,
+        touchTimeout: 250,
+        checkTimeout: 500
     };
 
     var clock;
@@ -72,7 +75,7 @@ describe('Generator Test', function () {
         var n = 34;
         generator.start(startCallbackSpy);
 
-        clock.tick(200 * n);
+        clock.tick(250 * n);
 
         sinon.assert.callCount(touchGeneratorStub, n);
     });

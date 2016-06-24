@@ -17,7 +17,10 @@ describe('MessageHandler Test', function () {
     var manager = {
         switchToGenerator: function () {
 
-        }
+        },
+        msgTimeout: 500,
+        touchTimeout: 250,
+        checkTimeout: 500
     };
 
     var clock;

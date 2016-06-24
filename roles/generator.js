@@ -5,7 +5,7 @@ var log = require('debug')('develop');
 function Generator(redisService, manager, getMessage) {
     this._redisService = redisService;
     this._manager = manager;
-    this._getMessage=getMessage;
+    this._getMessage = getMessage;
 }
 
 Generator.prototype.start = function (callback) {
@@ -38,13 +38,12 @@ function touch(callback) {
 
             touch.call(self, callback);
         });
-    }, 200);
+    }, self._manager.touchTimeout);
 }
 
 function sendMsg(timeout, curTerm, callback) {
     var self = this;
     setTimeout(function () {
-        var msg = self._getMessage();
         self._redisService.checkTerm(curTerm, function (err, result) {
             if (!result) {
                 log('Switch to MessageHandler.');
@@ -53,20 +52,16 @@ function sendMsg(timeout, curTerm, callback) {
                 return;
             }
 
+            var msg = self._getMessage();
             self._redisService.sendMessage(msg, function (err) {
                 if (err) {
                     return callback(err);
                 }
 
-                sendMsg.call(self, 500, curTerm, callback);
+                sendMsg.call(self, self._manager.msgTimeout, curTerm, callback);
             });
         });
     }, timeout);
-}
-
-function getMessage() {
-    this.count = this.count || 0;
-    return this.count++;
 }
 
 module.exports = Generator;

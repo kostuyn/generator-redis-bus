@@ -33,7 +33,7 @@ function check(callback) {
 
             check.call(self, callback);
         });
-    }, 500);
+    }, self._manager.checkTimeout);
 }
 
 function getMsg(timeout, callback) {
@@ -49,7 +49,7 @@ function getMsg(timeout, callback) {
             }
 
             if (!msg) {
-                return getMsg.call(self, 500, callback);
+                return getMsg.call(self, self._manager.msgTimeout, callback);
             }
 
             // Processing message
@@ -67,15 +67,6 @@ function getMsg(timeout, callback) {
             });
         });
     }, timeout);
-}
-
-function eventHandler(msg, callback) {
-    function onComplete() {
-        var error = Math.random() > 0.85;
-        callback(error, msg);
-    }
-
-    setTimeout(onComplete, Math.floor(Math.random() * 1000));
 }
 
 module.exports = MessageHandler;

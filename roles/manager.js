@@ -1,7 +1,10 @@
 'use strict';
 
-function Manager(redisService) {
+function Manager(redisService, msgTimeout) {
     this._redisService = redisService;
+    this.msgTimeout = msgTimeout;
+    this.touchTimeout = msgTimeout / 2 || 250;
+    this.checkTimeout = msgTimeout || 500;
 }
 
 Manager.prototype.setGenerator = function (generator) {
