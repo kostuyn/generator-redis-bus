@@ -10,7 +10,7 @@ var Generator = require('../roles/generator');
 var MessageHandler = require('../roles/message-handler');
 var ErrorHandler = require('../roles/error-handler');
 
-var n = process.env.MSG || 1000;
+var n = parseInt(process.env.MSG) || 1000;
 
 describe(n + ' messages Test', function () {
     beforeEach(clearDb);
@@ -21,7 +21,12 @@ describe(n + ' messages Test', function () {
         var count = 0;
         var array = [];
         var getMessage = function () {
+            if (count % 1000 == 0) {
+                console.log('Processing messages: ' + count);
+            }
+
             if (count == n) {
+                console.log('Now find unique..');
                 array = _.uniq(array);
                 assert.equal(array.length, n);
 
