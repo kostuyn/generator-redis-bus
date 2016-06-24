@@ -1,10 +1,10 @@
 'use strict';
 
-function Manager(redisService, msgTimeout) {
+function Manager(redisService, msgTimeout, expireTimeout) {
     this._redisService = redisService;
     this.msgTimeout = msgTimeout;
-    this.touchTimeout = msgTimeout / 2 || 250;
-    this.checkTimeout = msgTimeout || 500;
+    this.touchTimeout = expireTimeout / 2 || 250;
+    this.checkTimeout = expireTimeout || 500;
 }
 
 Manager.prototype.setGenerator = function (generator) {
@@ -53,7 +53,7 @@ Manager.prototype.start = function (getErrors, callback) {
     });
 };
 
-Manager.prototype.stop=function(){
+Manager.prototype.stop = function () {
     this._generator.stop();
     this._messageHandler.stop();
 };

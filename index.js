@@ -12,12 +12,13 @@ var MessageHandler = require('./roles/message-handler');
 var ErrorHandler = require('./roles/error-handler');
 
 var msgTimeout = parseInt(args.msgTimeout) || 500;
+var expireTimeout = parseInt(args.expireTimeout) || 500;
 var host = args.host || 'localhost';
 var port = parseInt(args.port) || 6379;
 
-var redisService = new RedisService(host, port);
+var redisService = new RedisService(host, port, expireTimeout);
 
-var manager = new Manager(redisService, msgTimeout);
+var manager = new Manager(redisService, msgTimeout, expireTimeout);
 var generator = new Generator(redisService, manager, getMessage);
 var messageHandler = new MessageHandler(redisService, manager, eventHandler);
 var errorHandler = new ErrorHandler(redisService);

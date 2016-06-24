@@ -3,22 +3,24 @@
 var redis = require('redis');
 var log = require('debug')('develop');
 
-function RedisService(host, port) {
+function RedisService(host, port, expireTimeout) {
     this._client = redis.createClient({host: host, port: port});
     this._client.on('error', function (err) {
         console.log('Redis error occurred: ' + err.message);
     });
+
+    this._expireTimeout = expireTimeout;
 }
 
 RedisService.prototype.touchGenerator = function (callback) {
-    this._client.pexpire('generator', 500, function (err, result) {
+    this._client.pexpire('generator', this._expireTimeout, function (err, result) {
         log('touch: ' + result);
         callback(err);
     });
 };
 
 RedisService.prototype.checkGenerator = function (callback) {
-    this._client.set('generator', 'exist', 'px', 500, 'nx', function (err, result) {
+    this._client.set('generator', 'exist', 'px', this._expireTimeout, 'nx', function (err, result) {
         log('check: ' + result);
         if (err) {
             return callback(err);

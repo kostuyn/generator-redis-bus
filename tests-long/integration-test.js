@@ -16,7 +16,7 @@ describe('1000000 messages Test', function () {
 
     it('Should be OK', function (done) {
         this.timeout(15000000);
-        var n = 10000000;
+        var n = 1000000;
         var count = 0;
         var array = [];
         var getMessage = function () {
@@ -50,9 +50,11 @@ describe('1000000 messages Test', function () {
 });
 
 function startNode(getMessage, eventHandler) {
-    var redisService = new RedisService('localhost', 6379);
+    var expireTimeout = 500;
+    var msgTimeout = 0;
+    var redisService = new RedisService('localhost', 6379, expireTimeout);
 
-    var manager = new Manager(redisService, 0);
+    var manager = new Manager(redisService, msgTimeout, expireTimeout);
     var generator = new Generator(redisService, manager, getMessage);
     var messageHandler = new MessageHandler(redisService, manager, eventHandler);
     var errorHandler = new ErrorHandler(redisService);
