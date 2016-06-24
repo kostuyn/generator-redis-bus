@@ -27,7 +27,13 @@ nodejs index.js [--getErrors, --msgTimeout=500, --expireTimeout=2000, --host=loc
 mocha tests
 ```
 
-Интеграционные тесты **(1млн сообщений)**
+Интеграционные тесты. **MSG** - задает количество сообщений для отправки
 ```
 mocha tests-long
+```
+
+ или
+
+```
+MSG=1000000 mocha tests-long
 ```
