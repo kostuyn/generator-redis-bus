@@ -1,7 +1,6 @@
 'use strict';
 
 var assert = require('assert');
-var _ = require('underscore');
 var redis = require('redis');
 
 var RedisService = require('../services/redis-service');
@@ -26,13 +25,24 @@ describe(n + ' messages Test', function () {
             }
 
             if (count == n) {
-                console.log('Now find unique..');
-                array = _.uniq(array);
-                assert.equal(array.length, n);
-
-                _.each(managers, function (manager) {
+                managers.forEach(function (manager) {
                     manager.stop();
                 });
+
+                console.log('Now find unique..');
+                var obj = {};
+                var isDuplicate = false;
+                for (var i = 0; i < n; i++) {
+                    if (obj[i] != undefined) {
+                        isDuplicate = true;
+                        break;
+                    }
+                    obj[i] = i;
+                }
+
+                assert.equal(array.length, n);
+                assert.equal(isDuplicate, false, 'Have duplicate messages');
+
                 done();
                 return count++;
             }
